@@ -1,7 +1,7 @@
 import expess from "express";
-import { userCheck } from "../controllers/userController";
+import { userValidate } from "../controllers/userControllers.js";
 const router = expess.Router();
 
-router.get("/api/profile", userCheck);
+router.post("/validate", userValidate);
 
 export default router;
