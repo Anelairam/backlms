@@ -4,6 +4,7 @@ import { connectDB } from "./src/config/db.js";
 import cors from "cors";
 import { expressjwt as jwt } from "express-jwt";
 import jwks from "jwks-rsa";
+import { auth } from "express-oauth2-jwt-bearer";
 
 const app = express();
 const PORT = process.env.PORT || 5001;
@@ -24,18 +25,16 @@ connectDB()
 app.use(express.json());
 app.use(cors());
 
-// 🔒 Auth0 middleware
-const checkJwt = jwt({
-  secret: jwks.expressJwtSecret({
-    jwksUri: `https://${process.env.AUTH_TENANT}/.well-known/jwks.json`,
-    cache: true,
-    rateLimit: true,
-    jwksRequestsPerMinute: 5,
-
-  }),
+const jwtCheck = auth({
   audience: process.env.AUTH0_AUDIENCE,
-  issuer: `https://${process.env.AUTH_TENANT}/`,
-  algorithms: ["RS256"],
+  issuerBaseURL: process.env.AUTH_TENANT,
+  tokenSigningAlg: "RS256",
 });
 
-app.use(checkJwt)
+console.log("JWT Check Middleware: ", jwtCheck);
+// // enforce on all endpoints
+
+app.get("/", jwtCheck, async (req, res) => {
+  console.log("Request User:", req.auth);
+  res.json({ message: "Authorized" });
+});
