@@ -5,6 +5,7 @@ import cors from "cors";
 import { expressjwt as jwt } from "express-jwt";
 import jwks from "jwks-rsa";
 import { auth } from "express-oauth2-jwt-bearer";
+import userRoutes from "./src/routes/userRoutes.js";
 
 const app = express();
 const PORT = process.env.PORT || 5001;
@@ -31,10 +32,6 @@ const jwtCheck = auth({
   tokenSigningAlg: "RS256",
 });
 
-console.log("JWT Check Middleware: ", jwtCheck);
-// // enforce on all endpoints
 
-app.get("/", jwtCheck, async (req, res) => {
-  console.log("Request User:", req.auth);
-  res.json({ message: "Authorized" });
-});
+
+app.use("/user", jwtCheck, userRoutes);
