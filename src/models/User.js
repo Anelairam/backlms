@@ -6,8 +6,8 @@ const userSchema = new mongoose.Schema({
   first_name: String,
   last_name: String,
   email: String,
-  classroom: [{ type: mongoose.Schema.Types.ObjectId, ref: "Classroom" }],
-  notes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Note" }],   
+//   classroom: [{ type: mongoose.Schema.Types.ObjectId, ref: "Classroom" }],
+//   notes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Note" }],   
   role: {
     type: String,
     enum: ["student", "instructor", "admin"],
