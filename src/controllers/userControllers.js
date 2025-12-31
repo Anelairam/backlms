@@ -13,7 +13,8 @@ export const userValidation = async(req,res)=>{
             last_name: accessData.family_name,
             role: "student",
             validatedData: accessData.email_verified,
-        })
+            classroom: undefined, 
+            notes: undefined })
 
         res.status(201).json({
             email: newUser.email,
@@ -22,13 +23,12 @@ export const userValidation = async(req,res)=>{
             role: newUser.role,
         })
     }else{
-       const returnedUser = {
-        email: user.email,
-        first_name: user.first_name,
-        last_name: user.last_name,
-        role: user.role,
-       }
-       console.log("returnedUser: ", returnedUser)
+        const returnedUser= {
+            first_name: user.first_name,
+            last_name: user.last_name,
+            classroom: user.classroom,
+            notes: user.notes  
+        }
        res.status(200).json(returnedUser)
     }
 
